@@ -1,6 +1,7 @@
 package br.unisul.web.trabalhoFinal.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.unisul.web.trabalhoFinal.domain.Emprestimo;
+import br.unisul.web.trabalhoFinal.dtos.EmprestimoDto;
 import br.unisul.web.trabalhoFinal.services.EmprestimoService;
 
 @RestController
@@ -40,6 +42,18 @@ public class EmprestimoResource {
 	ResponseEntity<List<Emprestimo>> findByUsuario(@PathVariable Integer usuarioId) {
 		List<Emprestimo> list = service.findByUsuario(usuarioId);
 		return ResponseEntity.ok().body(list);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<EmprestimoDto>> findAll() {
+		List<Emprestimo> lista = service.findAll();
+		//ou for para percorrer a lista
+		//List<CategoriaDto> listaDto = lista.stream().map(obj -> new CategoriaDto(obj)).collect(Collectors.toList()); 
+		List<EmprestimoDto> listDto = new ArrayList<EmprestimoDto>();
+		for (Emprestimo e : lista) {
+			listDto.add(new EmprestimoDto(e));
+		}
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }

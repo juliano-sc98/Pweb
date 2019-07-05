@@ -1,5 +1,6 @@
 package br.unisul.web.trabalhoFinal.services;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +35,11 @@ public class EmprestimoService {
 	}
 	
 	public Emprestimo insert(Emprestimo obj) {
+		Date b = new Date();
+		Calendar hoje = Calendar.getInstance();
+		b = hoje.getTime();
 		obj.setId(null);
-		obj.setInstante(new Date());
+		obj.setInstante(b);
 		obj.setUsuario(usuarioService.find(obj.getUsuario().getId()));
 		Date a = obj.getDevolucao();
 		obj = rep.save(obj);
@@ -56,5 +60,9 @@ public class EmprestimoService {
 	public List<Emprestimo> findByUsuario(Integer idUsuario) {
 		Usuario usuario = usuarioService.find(idUsuario);
 		return rep.findByUsuario(usuario);
+	}
+	
+	public List<Emprestimo> findAll(){
+		return rep.findAll();
 	}
 }
